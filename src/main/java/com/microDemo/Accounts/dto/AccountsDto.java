@@ -7,5 +7,4 @@ public class AccountsDto {
     private Long accountNumber;
     private String accountType;
     private String branchAddress;
-    private String mobileNumber;
 }
