@@ -37,14 +37,22 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponceDto> handleGlobalException(Exception ex, WebRequest request) {
+    public ResponseEntity<ErrorResponceDto> handleGlobalException(Exception ex, WebRequest request) throws Exception {
+
+        String path = request.getDescription(false);
+
+        if (path.contains("swagger-ui") || path.contains("v3/api-docs")) {
+            throw ex;
+        }
+
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
         ErrorResponceDto error = new ErrorResponceDto(
-                request.getDescription(false),
+                path,
                 status,
                 ex.getMessage(),
                 LocalDateTime.now()
         );
+
         return new ResponseEntity<>(error, status);
     }
 
